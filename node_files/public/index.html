@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prototype/1.7.2/prototype.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+
+    <script src="../charts/jumpChart.js"></script>
+    <script src="../charts/swayChart.js"></script>
+    <script src="../charts/landingChart.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <title>SpartaForce</title>
+</head>
+<body onload="contStartApp()">
+<nav class="navbar navbar-inverse">
+  <div class="">
+    <div class="navbar-header">
+     <a class="navbar-brand" href="#"><img src="../images/sparta-logo.png"  style="width: 220px;height: 54px;margin-top: -7px;"></a>
+    </div>
+      <div class="control-top">
+          <div class="user-name"></div>
+          <div class="connection">Connection: <span id="conn_status">Unplugged <i class="glyphicon glyphicon-remove-sign"></i></span></div></div>
+  </div>
+</nav>
+<div class=" main">    
+  <div class="row">
+      <div class="side-col text-center">
+        <button class="scan-btn btn btn-primary" style="width: 120px;" onClick="contStartJumpTest();">Scan Test</button><br><br>
+        <button class="sway-btn btn btn-primary" style="width: 120px;" onClick="swaySideButtons();">Sway Test</button><br><br>
+        <div class="sway-buttons"></div>
+        <button class="landing-btn btn btn-primary" style="width: 120px;" onClick="contStartLandingTest();">Landing Test</button><br><br>
+        <button class="weight-btn btn btn-primary" style="width: 120px;" onClick="contStartWeightTest();">Weight</button><br><br>
+         <!--        <div>ID <span id="conn_id">ID</span></div>-->
+        <!--        <button onClick="contStopJumpTest();">stop the test early and keep the results</button>-->
+        <!--        <button onClick="contGetTestResults();">Get results </button>-->
+        <br><br><br><br>
+         <button class="stop-btn btn btn-danger" style="width: 120px;" title="Stop the test and keep the results" onClick="contABORTJumpTest();">Stop</button><br><br>
+         <button class="btn btn-danger" style="width: 120px;" title="" onClick="location.reload();">Reset</button><br><br>
+         <button style="width: 120px;" class="btn btn-primary" id="show">Show Advance</button>
+         <button style="width: 120px;" class="btn btn-primary" id="hide">Hide Advance</button>
+    </div>
+    <div class="center-col"> 
+      <div id="app">  
+<!--       <button class="btn" onClick="sendStop();">Stop the plate</button>  -->
+<div class="progress-area">
+      
+</div>
+        <br>
+        <div class="msg-area">
+            <div class="log-msg"></div>
+        </div>
+        <div class="log-msg-right"></div>
+        <div style="margin-left:15px;min-height: 240px; ">
+            <div id="temp_div"></div>
+            <div id="cop1_div"></div>
+            <div id="scan" style="display: none">
+                <div>Weight: <span id="weight_text">0</span></div>
+            </div>
+            <div id="sway" style="display: none">
+
+            </div>
+        </div>
+        <div class="msg-area2">
+            <div class="display-msg"></div>
+        </div>
+        <div class="ops-test-send">   
+            <div id="setting-btns">
+                <button class="btn btn-secondary" onClick="sendDataToTrac('scan');"><i class="glyphicon glyphicon-upload"></i> Send Scan To Trac</button>
+                <button class="btn btn-secondary" onClick="view_data('scan');"><i class="glyphicon glyphicon-search"></i>View Saved Jumps Data</button><br><br>
+                <button class="btn btn-secondary" onClick="sendDataToTrac('sway');"><i class="glyphicon glyphicon-upload"></i> Send Sway To Trac</button>
+                <button class="btn btn-secondary" onClick="view_data('sway');"><i class="glyphicon glyphicon-search"></i>View Saved Sways Data</button><br><br>
+                <button class="btn btn-secondary" onClick="sendDataToTrac('landing');"><i class="glyphicon glyphicon-upload"></i> Send Landing To Trac</button>
+                <button class="btn btn-secondary" onClick="view_data('landing');"><i class="glyphicon glyphicon-search"></i>View Saved Landing Data</button>
+                <br><br>
+                <button class="btn btn-danger" onClick="clearlocalStorage()">Clear All Tests Data</button>
+            </div><br>
+            <div class="data-table"></div>
+        </div>
+    </div>
+    </div>
+    
+  </div>
+</div>
+
+<footer class="container-fluid text-left">
+  <p>Copyright 2012 Sparta <br />
+            Performance Science 165A <br />
+            Constitution Drive, Menlo Park, <br />
+            CA 94025 , Phone: 650 833 9384 </p><br>
+        <a style="color: white;" href="../images/SpartaTOS-30Aug2013.pdf" target="TOS">Terms of Service</a><br>
+        <a style="color: white;" href="../images/SpartaPrivacyPolicy-30Aug2013.pdf" target="Privacy">Privacy Statement</a>
+      
+</footer>
+
+</body>
+<script  src="d3.v3.min.js" charset="utf-8"></script>
+<script  src="websocket.js"></script> 
+<script  src="../controllers/mainController.js"></script> 
+<script  src="../controllers/swayController.js"></script> 
+<script  src="../controllers/jumpController.js"></script> 
+<script  src="../controllers/landingController.js"></script> 
+<script  src="../controllers/UIController.js"></script> 
+
+
+

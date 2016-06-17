@@ -1,0 +1,101 @@
+
+function contStartSwayTest(extremity) {
+    $$(".sway-buttons").empty();
+    globals.swayExtremity = extremity;
+    globals.stopChart = false;
+    startSway();
+  //  startLandingRealTimeChart();
+    startSwayRealTimeChart();
+    ui.displayMsg('Trial Number :' + globals.swayTestNumber);
+    $$("#sway").show();
+    $$("#scan").hide();
+    ui.BtnsEnableControll(['sway','stop']);
+}
+
+function validateSwayResult(data) {
+    if (data.WeightKG < 5) { 
+        ui.setMsg('Invalid minimum weight', true);
+        return true;
+    }
+    var num= Number(globals.swayTestNumber)+1;
+    var lastSway = localStorage['Sparta_sway_' + num];
+    if (lastSway != null || lastSway != undefined) {//if not the first sway
+         lastSway = jQuery.parseJSON(lastSway);
+         if(Math.abs(lastSway.WeightKG - data.WeightKG) > globals.WeightDiff){
+             ui.setMsg('Invalid weight', true);
+             return true;
+         }
+    }
+    return false;
+}
+
+//sway results 
+function swayResult(data) {
+    //if pounds convert the weight, notice the object name still call WeightKG
+    data.WeightKG = ui.convertWeight(data.WeightKG);
+    var invalid = validateSwayResult(data);
+    if (invalid) {
+        ui.displayMsg('');
+    } else {
+        d = new Date();
+        data.side = ui.getSide(globals.swayTestNumber);
+        data.extremity = globals.swayExtremity;
+        data.Date = d.yyyymmdd();
+        
+        console.log(data);
+        var data = JSON.stringify(data);
+        localStorage.setItem("Sparta_sway_" + globals.swayTestNumber+ '_' + globals.testGUID, data);
+       // console.log(localStorage['Sparta_sway_' + globals.swayTestNumber]);
+        var q = jQuery.parseJSON(localStorage['Sparta_sway_' + globals.swayTestNumber+ '_' + globals.testGUID]);
+        globals.swayTestNumber--;
+    }
+    //test again 
+    console.log(globals.swayTestNumber);
+    if (globals.swayTestNumber > 0) {
+        setTimeout(function () {
+            contStartSwayTest(globals.swayExtremity);
+        }, 4000);
+    } else {//test is over 
+        var r = confirm("Test Over! Send data to sparta Trac?");
+        if (r == true) {
+            sendDataToTrac('sway');
+        }
+        ui.displayMsgRight("", false);
+        globals.swayTestNumber = globals.initSwayTestNumber;
+    }
+
+}
+function swayProgress(obj) {
+    if (obj.Status == 'waitingforstill') {
+        $$(".log-msg").empty();
+        var side = ui.getSide(globals.swayTestNumber);
+        globals.flag=true;
+        ui.displayMsgRight("Stand Still – " + side + " side coming up .  Time Remain " + obj.TimeRemainSec.toFixed(0), false);
+    }
+    //bertec execute protocolstart twice and the sounds play twice
+    //we added a flag to fix this bug
+    if (obj.Status == 'protocolstart' && globals.flag==true) {
+        $$(".log-msg").empty();
+        var side = ui.getSide(globals.swayTestNumber);
+        ui.displayMsgRight("Status: Balance on ." + side + " side ", false);
+        var audio = new Audio('../horn.mp3');
+        audio.play();
+        globals.flag=false;
+    }
+    if (obj.Status == 'protocolinprogress') {
+        $$(".log-msg").empty();
+        var side = ui.getSide(globals.swayTestNumber);
+        var t = 20 - obj.SamplesCollected / 1000;
+        ui.displayMsgRight("Balance on " + side + " side,  Time left " + t.toFixed(0) + "", false);
+
+    }
+    if (obj.Status == 'computingstart') {
+        var audio = new Audio('../stop.mp3');
+        audio.play();
+    }
+    if (obj.Status == 'computingstart') {
+        $$(".log-msg").empty();
+        var side = ui.getSide(globals.swayTestNumber);
+        ui.displayMsgRight("Done, Computing ." + side + "", false);
+    }
+}

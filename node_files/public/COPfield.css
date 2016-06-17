@@ -1,0 +1,13 @@
+#cop_disp_outer
+{
+   background-color:#f0f0f0;
+}
+
+.cop_marker
+{
+   position: absolute;
+   left: 0px;
+   top: 0px;
+   z-index: 20;
+   visibility: hidden;
+}

@@ -1,0 +1,18 @@
+
+
+Run install-service
+Press Yes to allow access
+Set the Path by clicking on the ... icon
+Navigate to the SpartaForce folder and select the runSparta.bat file
+Click on the install service
+restart the computer
+
+
+Common problems
+
+Not Connected:   OR    Unplugged : 
+
+Make sure the Bertec port from SpartaTrac set to the same port on the bertec drivers
+
+
+
