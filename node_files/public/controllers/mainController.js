@@ -24,7 +24,7 @@ function contStartApp() {
                 setTimeout(function () {
                     sendSetConfig(result.config.ZeroNow,
                             result.config.AutoZero,
-                            result.config.StandStill,
+                            result.config.StandStillLevel,
                             result.config.StandStill,
                             result.config.KeepData);
                     $$("#temp_div").hide();
@@ -118,7 +118,7 @@ function getDataLocalStorage(max, type) {
 }
 //data in json format 
 function send_date(data, domain, testType, sentPercent,testNumber) {
-  //  console.log(data);
+   // console.log(data);
     ui.progressBar();
     $$.ajax({
         type: 'POST',

@@ -70,7 +70,8 @@ function singleLegLandingResult(data) {
     console.log(data);
     var invalid = validateLandingResult(data);
     if (invalid) {
-
+        var audio = new Audio('../error.mp3');
+        audio.play();
     } else {
         d = new Date();
         data.side = ui.getSide(globals.landingTestNumber);

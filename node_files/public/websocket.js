@@ -146,7 +146,7 @@ function websocketParseIncomingData(jsonText)
       }   
       //COPfield.positionTargetCursor(obj.FZ, obj.COPx, obj.COPy);
       if(drawData == true && obj.JumpType=='Countermovement'){
-            globals.t++ ;
+            globals.t=globals.t+3 ;
             globals.v=obj.WeightKG * 9.81;
         }
       if(drawData == true && obj.JumpType=='Sway'){
@@ -169,6 +169,7 @@ function websocketParseIncomingData(jsonText)
        $$( ".log-msg" ).empty();
        if(obj.Result == "FAIL"){
             ui.setMsg("Command failed, Reason:"+obj.Reason, true);
+            ui.displayMsgRight('');
         }
    }
    if (obj.Command == "PROGRESS")
@@ -192,6 +193,8 @@ function websocketParseIncomingData(jsonText)
             afterResult(obj);
         }else{
             ui.setMsg("Jump failed. Reason: "+obj.Reason , true);
+             var audio = new Audio('error.mp3');
+              audio.play();
         }
         drawData=false;
    }

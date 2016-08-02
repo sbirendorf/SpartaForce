@@ -36,6 +36,8 @@ function swayResult(data) {
     var invalid = validateSwayResult(data);
     if (invalid) {
         ui.displayMsg('');
+        var audio = new Audio('../error.mp3');
+        audio.play();
     } else {
         d = new Date();
         data.side = ui.getSide(globals.swayTestNumber);
@@ -86,7 +88,7 @@ function swayProgress(obj) {
         $$(".log-msg").empty();
         var side = ui.getSide(globals.swayTestNumber);
         var t = 20 - obj.SamplesCollected / 1000;
-        ui.displayMsgRight("Balance on " + side + " side,  Time left " + t.toFixed(0) + "", false);
+        ui.displayMsgRight("Balance on " + side + " side,  Time Remain " + t.toFixed(0) + "", false);
 
     }
     if (obj.Status == 'computingstart') {

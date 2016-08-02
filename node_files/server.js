@@ -44,40 +44,60 @@ app.post('/api/post/:tagId', function (req, res) {
         });
     }
     if (req.param("tagId") == 'save_scan') {
+        var fs = require("fs");
         var data = JSON.parse(req.body.data);
-        request.post({
-            url: 'https://' + site + '/api/savescan',
-            form: {
-                'sessionId': sessionId,
-                'date': data.Date,
-                'aid': data.ID,
-                'test_name': 'Vertical Jump',
-                'weight': data.WeightKG,
-                'vertical_jump': data.Countermovement.JumpHeight,
-                'switch_impulse': '',
-                'switch_time': '',
-                'ecc_rate_vert_force': data.Countermovement.AverageEccentricRateOfChange,
-                'ecc_rate_vert_frc_bfoot': '',
-                'ecc_vert_impulse': data.Countermovement.EccentricVerticalImpulse,
-                'con_vert_impulse': data.Countermovement.ConcentricVerticalImpulse,
-                'avg_vert_con_force': data.Countermovement.AverageConcentricPhaseForce,
-                'peak_fz': '',
-                'min_fz': '',
-                'peak_fx': '',
-                'min_fx': '',
-                'peak_fy': '',
-                'min_fy': '',
-                'plate_type': 'bertec'
-            }
-        }, function (error, response, body) {
-            if (error) {
-                console.log("There was an error:", error);
-                res.send('{"error":{"descr":"There was an error connecting to SpartaTrac"}}');
-            } else {
-                console.log("Request posted successfully! ", body);
-                res.send(body);
-            }
-        });
+		var file_url = data.imageUrl;
+
+          // Save base64 image to disk
+    
+    var buff = new Buffer(file_url
+        .replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
+     fs.writeFile("jump.jpg", buff, function (err) {
+    });
+    var image = file_url;
+
+    var dataImg = image.replace(/^data:image\/\w+;base64,/, '');
+    
+
+//end image file
+    setTimeout(function() {
+
+        var fs = require("fs");
+        var r = request.post('https://' + site + '/api/savescan', function optionalCallback(err, httpResponse, body) {
+              if (err) {
+                       console.log("There was an error:", err);
+                       res.send('{"error":{"descr":"There was an error connecting to SpartaTrac"}}');
+              } else {
+                       console.log("Request posted successfully! ", body);
+                       res.send(body);
+                     }
+         })
+
+            var form = r.form();
+            form.append('sessionId', sessionId);
+            form.append('aid', data.ID);
+            form.append('date', data.Date);
+            form.append('test_name', 'Vertical Jump');
+            form.append('weight', data.WeightKG);
+            form.append('vertical_jump', data.Countermovement.JumpHeight);
+            form.append('switch_impulse', '');
+            form.append('switch_time', '');
+            form.append('ecc_rate_vert_force', data.Countermovement.AverageEccentricRateOfChange);
+            form.append('ecc_rate_vert_frc_bfoot', '');
+            form.append('ecc_vert_impulse', data.Countermovement.EccentricVerticalImpulse);
+            form.append('con_vert_impulse', data.Countermovement.ConcentricVerticalImpulse);
+            form.append('avg_vert_con_force', data.Countermovement.AverageConcentricPhaseForce);
+            form.append('peak_fz', '');
+            form.append('min_fz', '');
+            form.append('peak_fx', '');
+            form.append('peak_fx', '');
+            form.append('min_fx', '');
+            form.append('peak_fy', '');
+            form.append('min_fy', '');
+            form.append('plate_type', 'bertec');
+            form.append('files[jpg]', fs.createReadStream(__dirname +'\\jump.jpg'));
+           // form.append('files[jpg]', fs.createReadStream(__dirname +'\\cbk.jpg'));
+        }, 1000);
     }
     if (req.param("tagId") == 'save_sway') {
         var data = JSON.parse(req.body.data);
@@ -100,6 +120,7 @@ app.post('/api/post/:tagId', function (req, res) {
                 'vel_med_lat_int_2': data.Sway.ML_Vel_2,
                 'fre_tot_med_lat_int_1': data.Sway.f_ML_1,
                 'fre_tot_med_lat_int_2': data.Sway.f_ML_2,
+				'sway_AverageFZ': data.Sway.AverageFZ,
                 'files': '',
                 'plate_type': 'bertec'
             }
@@ -113,10 +134,36 @@ app.post('/api/post/:tagId', function (req, res) {
             }
         });
     }
-    if (req.param("tagId") == 'publish_tests') {
-//        console.log(req.body.test);
-//        console.log(req.body.uid);
-//        console.log(sessionId);   
+    if (req.param("tagId") == 'save_landing') {
+        var data = JSON.parse(req.body.data);
+        request.post({
+            url: 'https://' + site + '/api/savestabilize',
+            form: {
+                    'sessionId': sessionId,
+                    'date': data.Date,
+                    'aid': data.ID,
+                    'weight': data.WeightKG,
+                    'extremity': 'lower',
+                    'side' : data.side, // left or right
+                    'time_stabilize' : data.TimeToStabilization,
+                    'result_vect_to_stabile' : data.RVTTS,
+                    'time_stabile_a_p' : data.TTS_AP,
+                    'time_stabile_m_l' : data.TTS_ML,
+                    'relative_res_impulse' : data.Rel_Res_I,
+                    'relative_peak_force' : data.Rel_Fz,
+                    'plate_type': 'bertec'
+            }
+        }, function (error, response, body) {
+            if (error) {
+                console.log("There was an error:", error);
+                res.send('{"error":{"descr":"There was an error connecting to SpartaTrac"}}');
+            } else {
+                console.log("Request posted successfully! ", body);
+                res.send(body);
+            }
+        });
+    }
+    if (req.param("tagId") == 'publish_tests') { 
         request.post({
             url: 'https://' + site + '/api/publish_tests',
             form: {

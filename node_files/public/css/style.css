@@ -119,3 +119,19 @@ footer {
     position: fixed;
     left: 38%;
     top: 20%;}
+	
+.jump-height {
+    position: absolute;
+    z-index: 99;
+    height: 423px;
+    width: 480px;
+    background: #ffffff;
+}
+.jump-title {
+    margin-left: 137px;
+    margin-top: 20px;
+}
+.jump-number {
+    margin-left: 115px;
+    font-size: 225px;
+}
