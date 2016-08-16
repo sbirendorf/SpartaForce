@@ -41,7 +41,7 @@ function startLandingOperator(userWeight) {
             audio.play();
             var side = ui.getSide(globals.landingTestNumber);
             ui.displayMsgRight("Jump onto the plate, land on your " + side + " foot", false);
-            ui.displayMsg('Trial Number :' + globals.landingTestNumber);
+            ui.displayMsg('Trials Remaining :' + globals.landingTestNumber);
             startLanding(userWeight);
             clearInterval(str);
             t = 0;

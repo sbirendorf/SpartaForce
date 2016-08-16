@@ -6,7 +6,7 @@ function contStartSwayTest(extremity) {
     startSway();
   //  startLandingRealTimeChart();
     startSwayRealTimeChart();
-    ui.displayMsg('Trial Number :' + globals.swayTestNumber);
+    ui.displayMsg('Trials Remaining :' + globals.swayTestNumber);
     $$("#sway").show();
     $$("#scan").hide();
     ui.BtnsEnableControll(['sway','stop']);
@@ -72,14 +72,14 @@ function swayProgress(obj) {
         $$(".log-msg").empty();
         var side = ui.getSide(globals.swayTestNumber);
         globals.flag=true;
-        ui.displayMsgRight("Stand Still – " + side + " side coming up .  Time Remain " + obj.TimeRemainSec.toFixed(0), false);
+        ui.displayMsgRight("Stand Still – Balance on" + side + " Foot / Hand First.  Time Remaining " + obj.TimeRemainSec.toFixed(0), false);
     }
     //bertec execute protocolstart twice and the sounds play twice
     //we added a flag to fix this bug
     if (obj.Status == 'protocolstart' && globals.flag==true) {
         $$(".log-msg").empty();
         var side = ui.getSide(globals.swayTestNumber);
-        ui.displayMsgRight("Status: Balance on ." + side + " side ", false);
+        ui.displayMsgRight("Status: Balance on ." + side + "", false);
         var audio = new Audio('../horn.mp3');
         audio.play();
         globals.flag=false;
@@ -88,7 +88,7 @@ function swayProgress(obj) {
         $$(".log-msg").empty();
         var side = ui.getSide(globals.swayTestNumber);
         var t = 20 - obj.SamplesCollected / 1000;
-        ui.displayMsgRight("Balance on " + side + " side,  Time Remain " + t.toFixed(0) + "", false);
+        ui.displayMsgRight("Balance on " + side + ",  Time Remaining " + t.toFixed(0) + "", false);
 
     }
     if (obj.Status == 'computingstart') {

@@ -192,7 +192,7 @@ function websocketParseIncomingData(jsonText)
         if(obj.Result =="OK"){
             afterResult(obj);
         }else{
-            ui.setMsg("Jump failed. Reason: "+obj.Reason , true);
+            ui.setMsg("Test failed. Reason: "+obj.Reason , true);
              var audio = new Audio('error.mp3');
               audio.play();
         }

@@ -2,7 +2,7 @@ function contStartJumpTest() {
     globals.stopChart = false;
     globals.t = 0;
     startJump();
-    ui.displayMsg('Jump Number :' + globals.jumpTestNubmer);
+    ui.displayMsg('Jumps Remaining :' + globals.jumpTestNubmer);
     startScanRealTimeChart();
     $$("#sway").hide();
     $$("#scan").show();
@@ -75,7 +75,7 @@ function continueScan(){
         setTimeout(function () {
             drawData = true;
             contStartJumpTest();
-            ui.displayMsg('Jump Number :' + globals.jumpTestNubmer);
+            ui.displayMsg('Jumps Remaining :' + globals.jumpTestNubmer);
         }, 3500);
     } else {//test is over 
         var r = confirm("Test Over! Send data to sparta Trac?");
@@ -89,7 +89,7 @@ function continueScan(){
 function jumpProgress(obj) {
     if (obj.Status == 'waitingforstill') {
         $$(".log-msg").empty();
-        ui.displayMsgRight("Stand Still ,Time Remain " + obj.TimeRemainSec.toFixed(0), false);
+        ui.displayMsgRight("Stand Still ,Time Remaining " + obj.TimeRemainSec.toFixed(0), false);
     }
     if (obj.Status == 'protocolstart') {
         $$(".log-msg").empty();
