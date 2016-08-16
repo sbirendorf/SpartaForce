@@ -173,6 +173,7 @@ function serverResultCallback(result,sentPercent,testNumber,testType) {
             if(globals.publish == 'yes'){
                 publishResultsInSpartaTrac(testType);
             }
+            ui.BtnsEnableControll(['scan','sway','landing','weight']);
     }
 }
 function publishResultsInSpartaTrac(testType){

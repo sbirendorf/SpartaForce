@@ -47,6 +47,11 @@ function countermovementResult(data) {
         ui.displayMsgRight('');
         var audio = new Audio('../error.mp3');
         audio.play();
+
+        setTimeout(function () {
+             contStartJumpTest();
+        }, 3500);
+        
     } else {
         ui.displayMsgRight('<div class="jump-height"><div class="jump-title">Jump Height </div><div class="jump-number">' + Number(100 * data.Countermovement.JumpHeight).toFixed()+'</div></div>', false);   
         getJumpImage(data, globals.jumpTestNubmer);

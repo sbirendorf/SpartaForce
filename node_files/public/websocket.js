@@ -165,7 +165,6 @@ function websocketParseIncomingData(jsonText)
    }
    if (obj.Command == "ACK")
    {
-       console.log(obj);
        $$( ".log-msg" ).empty();
        if(obj.Result == "FAIL"){
             ui.setMsg("Command failed, Reason:"+obj.Reason, true);
@@ -193,8 +192,16 @@ function websocketParseIncomingData(jsonText)
             afterResult(obj);
         }else{
             ui.setMsg("Test failed. Reason: "+obj.Reason , true);
-             var audio = new Audio('error.mp3');
-              audio.play();
+            var audio = new Audio('error.mp3');
+            audio.play();
+            ui.displayMsgRight('');
+            if(obj.JumpType == "Countermovement"){
+              setTimeout(function () {
+                        contStartJumpTest();
+              }, 3500);
+
+            }
+
         }
         drawData=false;
    }
