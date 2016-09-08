@@ -135,6 +135,7 @@ function contStartWeightTest() {
             if(avgWeight == null){avgWeight = 0;}
             $$("#temp_div").empty();
             var stopBtn = '<button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="stopWeightTest();">Stop Weight</button><br><br>';
+			avgWeight = ui.convertWeight(avgWeight);
             $$("#temp_div").append("<div class='weight-test'>" + avgWeight.toFixed(1) + "</div>");
             $$("#temp_div").append(stopBtn);
         }

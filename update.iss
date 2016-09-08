@@ -41,8 +41,6 @@ Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\CrashSender.exe.man
 Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\ftd2xx.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\SpartaBertecFPServer.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\SpartaBertecFPServer.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\node-v4.4.3-x64.msi"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\{#NSSM}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\node_files\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
