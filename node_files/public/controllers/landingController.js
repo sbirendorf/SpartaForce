@@ -135,7 +135,7 @@ function contStartWeightTest() {
             if(avgWeight == null){avgWeight = 0;}
             $$("#temp_div").empty();
             avgWeight = ui.convertWeight(avgWeight);
-            var stopBtn = '<button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="stopWeightTest();">Stop Weight</button><button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="sendWeightToTrac('+avgWeight.toFixed(1)+');">Save Weight</button><br><br>';
+            var stopBtn = '<button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="stopWeightTest();">Stop Weight</button> <button class="stop-weight-btn btn btn-primary" style="width: 120px;margin-top: 95px;" onClick="sendWeightToTrac('+avgWeight.toFixed(1)+');">Save Weight</button><br><br>';
             $$("#temp_div").append("<div class='weight-test'>" + avgWeight.toFixed(1) + "</div>");
             $$("#temp_div").append(stopBtn);
         }
@@ -157,8 +157,9 @@ function sendWeightToTrac(weight) {
  var day = ("0" + d.getDate()).slice(-2);                      
     $$.ajax({
         type: 'POST',
-        url: "/api/save_weight",
-        data: {"date": year+"-"+month+"-"+day,"uid": globals.testGUID,"value": weight},
+        url: "/api/post/save_weight",
+        //data: {"date": year+"-"+month+"-"+day,"uid": globals.testGUID,"value": weight},
+        data: {"date": year+"-"+month+"-"+day,"uid": 1,"value": weight},
         success: function (result) {
             ui.displayMsgRight('Weight saved', false);
         },error: function (result) {
