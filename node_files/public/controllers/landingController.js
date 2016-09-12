@@ -154,12 +154,14 @@ function sendWeightToTrac(weight) {
  var d = new Date();
  var year = d.getFullYear();
  var month = ("0" + (d.getMonth() + 1)).slice(-2);
- var day = ("0" + d.getDate()).slice(-2);                      
+ var day = ("0" + d.getDate()).slice(-2);
+ d= year+"-"+month+"-"+day;
+  var data = {"Date": d,"uid": globals.testGUID,"value": weight};
+  data = JSON.stringify(data);              
     $$.ajax({
         type: 'POST',
         url: "/api/post/save_weight",
-        //data: {"date": year+"-"+month+"-"+day,"uid": globals.testGUID,"value": weight},
-        data: {"date": year+"-"+month+"-"+day,"uid": 1,"value": weight},
+        data: {"data": data},
         success: function (result) {
             ui.displayMsgRight('Weight saved', false);
         },error: function (result) {

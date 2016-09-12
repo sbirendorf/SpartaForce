@@ -166,10 +166,11 @@ app.post('/api/post/:tagId', function (req, res) {
     if (req.param("tagId") == 'save_weight') {
         var data = JSON.parse(req.body.data);
         request.post({
-            url: 'https://' + site + '/api/savefact',
-            form: {
+            url: 'https://' + site + '/api/set_fact',
+            form: { 
+                    'sessionId': sessionId,
                     'date': data.Date,
-                    'uid': data.ID,
+                    'uid': data.uid,
                     'value': data.value,
                     'metafact': 'weight'
             }
