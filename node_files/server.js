@@ -163,6 +163,26 @@ app.post('/api/post/:tagId', function (req, res) {
             }
         });
     }
+    if (req.param("tagId") == 'save_weight') {
+        var data = JSON.parse(req.body.data);
+        request.post({
+            url: 'https://' + site + '/api/savefact',
+            form: {
+                    'date': data.Date,
+                    'uid': data.ID,
+                    'value': data.value,
+                    'metafact': 'weight'
+            }
+        }, function (error, response, body) {
+            if (error) {
+                console.log("There was an error:", error);
+                res.send('{"error":{"descr":"There was an error connecting to SpartaTrac"}}');
+            } else {
+                console.log("Request posted successfully! ", body);
+                res.send(body);
+            }
+        });
+    }
     if (req.param("tagId") == 'publish_tests') { 
         request.post({
             url: 'https://' + site + '/api/publish_tests',

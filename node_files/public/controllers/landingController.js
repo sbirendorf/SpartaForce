@@ -134,8 +134,8 @@ function contStartWeightTest() {
             var avgWeight = weightCalc(getWeight,userWeight);
             if(avgWeight == null){avgWeight = 0;}
             $$("#temp_div").empty();
-            var stopBtn = '<button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="stopWeightTest();">Stop Weight</button><br><br>';
-			avgWeight = ui.convertWeight(avgWeight);
+            avgWeight = ui.convertWeight(avgWeight);
+            var stopBtn = '<button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="stopWeightTest();">Stop Weight</button><button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="sendWeightToTrac('+avgWeight.toFixed(1)+');">Save Weight</button><br><br>';
             $$("#temp_div").append("<div class='weight-test'>" + avgWeight.toFixed(1) + "</div>");
             $$("#temp_div").append(stopBtn);
         }
@@ -149,4 +149,22 @@ function stopWeightTest() {
     $$("#temp_div").hide();
     $$("#cop1_div").show();
     $$(".msg-area2").show();
+}
+function sendWeightToTrac(weight) {
+ var d = new Date();
+ var year = d.getFullYear();
+ var month = ("0" + (d.getMonth() + 1)).slice(-2);
+ var day = ("0" + d.getDate()).slice(-2);                      
+    $$.ajax({
+        type: 'POST',
+        url: "/api/save_weight",
+        data: {"date": year+"-"+month+"-"+day,"uid": globals.testGUID,"value": weight},
+        success: function (result) {
+            ui.displayMsgRight('Weight saved', false);
+        },error: function (result) {
+            var result = jQuery.parseJSON(result);
+            console.log(result);
+            ui.setMsg('Failed to save weight', true);
+        }
+    });
 }
