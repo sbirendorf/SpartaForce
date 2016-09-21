@@ -155,7 +155,9 @@ function sendWeightToTrac(weight) {
  var year = d.getFullYear();
  var month = ("0" + (d.getMonth() + 1)).slice(-2);
  var day = ("0" + d.getDate()).slice(-2);
- d= year+"-"+month+"-"+day;
+ var mins = ("0" + d.getMinutes()).substr(-2);
+ var hours = ("0" + d.getHours()).substr(-2);
+ d= year+"-"+month+"-"+day+" "+hours+":"+mins+":00";
   var data = {"Date": d,"uid": globals.testGUID,"value": weight};
   data = JSON.stringify(data);              
     $$.ajax({

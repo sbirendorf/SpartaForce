@@ -83,6 +83,7 @@ function continueScan(){
             ui.displayMsg('Jumps Remaining :' + globals.jumpTestNubmer);
         }, 3500);
     } else {//test is over 
+        ui.displayMsg('Jumps Remaining :' + globals.jumpTestNubmer);
         var r = confirm("Test Over! Send data to sparta Trac?");
         if (r == true) {
             sendDataToTrac('scan');
