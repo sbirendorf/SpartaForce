@@ -11,7 +11,7 @@ function contStartJumpTest() {
 //simple validation before we save the data
 function validateJumpResult(data) {
     if (data.Countermovement.JumpHeight < globals.ValidationMinJumpHeight || data.JumpHeight > globals.ValidationMaxJumpHeight) {
-        ui.setMsg('Invalid jump height', true);
+        ui.setMsg('Invalid jump height. Jump as to be greater than '+data.JumpHeight, true);
         return true;
     } 
     if (data.Countermovement.AverageConcentricPhaseForce < globals.ValidationMinAverageConcentricPhaseForce) {
@@ -31,7 +31,7 @@ function validateJumpResult(data) {
     if (lastJump != null || lastJump != undefined) {//if not the first jump
          lastJump = jQuery.parseJSON(lastJump);
          if(Math.abs(lastJump.WeightKG - data.WeightKG) > globals.WeightDiff){
-             ui.setMsg('Invalid weight', true);
+             ui.setMsg('Invalid weight, initial weight was '+lastJump.WeightKG +', current weight ' +data.WeightKG , true);
              return true;
          }
     }
