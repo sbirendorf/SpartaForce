@@ -147,7 +147,7 @@ function websocketParseIncomingData(jsonText)
       //COPfield.positionTargetCursor(obj.FZ, obj.COPx, obj.COPy);
       if(drawData == true && obj.JumpType=='Countermovement'){
             globals.t=globals.t+3 ;
-            globals.v=obj.WeightKG * 9.81;
+            globals.v=Math.abs(obj.WeightKG * 9.81);
         }
       if(drawData == true && obj.JumpType=='Sway'){
             globals.t = 10*obj.COPy ;
