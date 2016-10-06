@@ -1,1 +1,175 @@
-function contStartLandingTest(){ui.displayMsgRight("Step on the plate.",!1),ui.BtnsEnableControll(["landing","stop"]);var t=[],a=setInterval(function(){if(globals.currentWeight>3){ui.displayMsgRight("Stand Still.",!1),1==$$(".stop-btn").is(":disabled")&&clearInterval(a);var e=weightCalc(a,t);e>3&&setTimeout(function(){startLandingOperator(e)},3e3)}},200)}function weightCalc(t,a){if(a.push(globals.currentWeight),a.length>10){var e=Math.max.apply(null,a),i=Math.min.apply(null,a);if(1>e-i){for(var n=0,l=a.length,s=0;l>s;s++)n+=parseInt(a[s],10);var g=n/l;return clearInterval(t),ui.displayMsgRight("Step off the plate. ",!1),g}a.shift()}}function startLandingOperator(a){var e=setInterval(function(){if(globals.currentWeight<2){var i=new Audio("../horn.mp3");i.play();var n=ui.getSide(globals.landingTestNumber);ui.displayMsgRight("Jump onto the plate, land on your "+n+" foot",!1),ui.displayMsg("Trials Remaining :"+globals.landingTestNumber),startLanding(a),clearInterval(e),t=0,globals.stopChart=!1,startLandingRealTimeChart(),$$("#sway").show(),$$("#scan").hide(),stratLandingTest()}},2500)}function stratLandingTest(){var t=setInterval(function(){globals.currentWeight>5&&(globals.flag=!0,clearInterval(t))},500)}function validateLandingResult(){return!1}function singleLegLandingResult(t){console.log(t);var a=validateLandingResult(t);if(a){var e=new Audio("../error.mp3");e.play()}else{d=new Date,t.side=ui.getSide(globals.landingTestNumber),t.Date=d.yyyymmdd();var i=t.Input.WeightKG;t.WeightKG=ui.convertWeight(t.Input.WeightKG),console.log(t);var t=JSON.stringify(t);localStorage.setItem("Sparta_landing_"+globals.landingTestNumber+"_"+globals.testGUID,t),console.log(localStorage["Sparta_landing_"+globals.landingTestNumber+"_"+globals.testGUID]);jQuery.parseJSON(localStorage["Sparta_landing_"+globals.landingTestNumber+"_"+globals.testGUID]);globals.landingTestNumber--}if(globals.landingTestNumber>0)setTimeout(function(){ui.displayMsgRight("Loading",!1),drawData=!0,startLandingOperator(i)},2500);else{ui.displayMsgRight("",!1);var n=confirm("Test Over! Send data to sparta Trac?");1==n&&sendDataToTrac("landing"),ui.displayMsgRight("",!1),globals.landingTestNumber=globals.initLandingTestNumber}}function landingProgress(t){"protocolinprogress"==t.Status&&1==globals.flag&&(globals.flag=!1,setTimeout(function(){ui.displayMsgRight("Step off the plate.",!1);var t=new Audio("../stop.mp3");t.play(),globals.stopChart=!0},3e3))}function contStartWeightTest(){ui.displayMsgRight("Step on the plate.",!1),ui.BtnsEnableControll([]);var t=[];$$("#temp_div").show(),$$("#cop1_div").hide(),$$(".msg-area2").hide(),$$("#scan").hide();var a=setInterval(function(){if(globals.currentWeight>3){ui.displayMsgRight("Stand Still.",!1);var e=weightCalc(a,t);null==e&&(e=0),$$("#temp_div").empty(),e=ui.convertWeight(e);var i='<button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="stopWeightTest();">Stop Weight</button> <button class="stop-weight-btn btn btn-primary" style="width: 120px;margin-top: 95px;" onClick="sendWeightToTrac('+e.toFixed(1)+');">Save Weight</button><br><br>';$$("#temp_div").append("<div class='weight-test'>"+e.toFixed(1)+"</div>"),$$("#temp_div").append(i)}},100)}function stopWeightTest(){$$("#temp_div").empty(),ui.displayMsgRight("",!1),clearInterval(globals.weightTest),ui.BtnsEnableControll(["scan","sway","landing","weight"]),$$("#temp_div").hide(),$$("#cop1_div").show(),$$(".msg-area2").show()}function sendWeightToTrac(t){var a=new Date,e=a.getFullYear(),i=("0"+(a.getMonth()+1)).slice(-2),n=("0"+a.getDate()).slice(-2),l=("0"+a.getMinutes()).substr(-2),s=("0"+a.getHours()).substr(-2);a=e+"-"+i+"-"+n+" "+s+":"+l+":00";var g={Date:a,uid:globals.testGUID,value:t};g=JSON.stringify(g),$$.ajax({type:"POST",url:"/api/post/save_weight",data:{data:g},success:function(){ui.displayMsgRight("Weight saved",!1)},error:function(t){var t=jQuery.parseJSON(t);console.log(t),ui.setMsg("Failed to save weight",!0)}})}
+function contStartLandingTest() {
+    ui.displayMsgRight("Step on the plate.", false);
+    ui.BtnsEnableControll(['landing','stop']);
+    var userWeight =[];
+    var getWeight = setInterval(function () {
+        if (globals.currentWeight > 3) {
+            ui.displayMsgRight("Stand Still.", false);
+            if ($$(".stop-btn").is(":disabled") == true) {
+                clearInterval(getWeight);
+            }// if the user canceld the test , stop the interval
+            var avgWeight = weightCalc(getWeight,userWeight);
+            if(avgWeight>3){
+                setTimeout(function(){  startLandingOperator(avgWeight); }, 3000);
+            }
+        }
+    }, 200);
+}
+function weightCalc(getWeight,userWeight){
+    userWeight.push(globals.currentWeight);
+    if(userWeight.length > 10 ){
+       var max = Math.max.apply(null, userWeight);
+       var min = Math.min.apply(null, userWeight);  
+        if(max - min <1){
+            var sum = 0;
+            var ww = userWeight.length;
+            for( var i = 0; i < ww; i++ ){
+                sum += parseInt( userWeight[i], 10 ); //don't forget to add the base
+            }
+            var avgWeight = sum/ww;
+            clearInterval(getWeight); 
+            ui.displayMsgRight("Step off the plate. ", false);
+            return avgWeight;
+        }
+        userWeight.shift(); // remove the first key from the array
+    }  
+}
+function startLandingOperator(userWeight) {
+    var str = setInterval(function () {
+        if (globals.currentWeight < 2) {
+            var audio = new Audio('../horn.mp3');
+            audio.play();
+            var side = ui.getSide(globals.landingTestNumber);
+            ui.displayMsgRight("Jump onto the plate, land on your " + side + " foot", false);
+            ui.displayMsg('Trials Remaining :' + globals.landingTestNumber);
+            startLanding(userWeight);
+            clearInterval(str);
+            t = 0;
+            globals.stopChart = false;
+            startLandingRealTimeChart();
+            $$("#sway").show();
+            $$("#scan").hide();
+            stratLandingTest();
+        }
+    }, 2500);
+}
+//check when the user back on the plate , than start the counter to stop the test
+function stratLandingTest() {
+    var str = setInterval(function () {
+        if (globals.currentWeight > 5) {
+            globals.flag = true;
+            clearInterval(str);
+        }
+    }, 500);
+}
+function validateLandingResult(data) {
+    return false;
+}
+//landing results 
+function singleLegLandingResult(data) {
+    console.log(data);
+    var invalid = validateLandingResult(data);
+    if (invalid) {
+        var audio = new Audio('../error.mp3');
+        audio.play();
+    } else {
+        d = new Date();
+        data.side = ui.getSide(globals.landingTestNumber);
+        data.Date = d.yyyymmdd();
+        var testInitWeight = data.Input.WeightKG;
+        //if pounds convert the weight, notich the object name still WeightKG
+        data.WeightKG = ui.convertWeight(data.Input.WeightKG);
+        
+        console.log(data);
+        var data = JSON.stringify(data);
+        localStorage.setItem("Sparta_landing_" + globals.landingTestNumber+ '_' + globals.testGUID, data);
+        console.log(localStorage['Sparta_landing_' + globals.landingTestNumber+ '_' + globals.testGUID]);
+        var q = jQuery.parseJSON(localStorage['Sparta_landing_' + globals.landingTestNumber+ '_' + globals.testGUID]);
+        globals.landingTestNumber--;
+    }
+    //test again 
+    if (globals.landingTestNumber > 0) {
+        setTimeout(function () {
+            ui.displayMsgRight("Loading", false);
+            drawData = true;
+            startLandingOperator(testInitWeight);
+        }, 2500);
+    } else {//test is over 
+        ui.displayMsgRight("", false);
+        var r = confirm("Test Over! Send data to sparta Trac?");
+        if (r == true) {
+            sendDataToTrac('landing');
+        }
+         ui.displayMsgRight("", false);
+         globals.landingTestNumber = globals.initLandingTestNumber;
+    }
+}
+
+function landingProgress(obj) {
+    //the user is on the plate , wait 5 sec and send a message 
+    //we want to be here once, so we set the flag to true
+    if (obj.Status == 'protocolinprogress' && globals.flag == true) {
+        globals.flag = false;
+        setTimeout(function () {
+            ui.displayMsgRight("Step off the plate.", false);
+            var audio = new Audio('../stop.mp3');
+            audio.play();
+            globals.stopChart = true;
+        }, 3000);
+    }
+}
+
+//function for the weight test
+function contStartWeightTest() {
+    ui.displayMsgRight("Step on the plate.", false);
+    ui.BtnsEnableControll([]);
+    var userWeight =[];
+    $$("#temp_div").show();
+    $$("#cop1_div").hide();
+    $$(".msg-area2").hide();
+    $$("#scan").hide();
+    var getWeight = setInterval(function () {
+        if (globals.currentWeight > 3) {
+            ui.displayMsgRight("Stand Still.", false);
+            var avgWeight = weightCalc(getWeight,userWeight);
+            if(avgWeight == null){avgWeight = 0;}
+            $$("#temp_div").empty();
+            avgWeight = ui.convertWeight(avgWeight);
+            var stopBtn = '<button class="stop-weight-btn btn btn-danger" style="width: 120px;margin-top: 95px;" onClick="stopWeightTest();">Stop Weight</button> <button class="stop-weight-btn btn btn-primary" style="width: 120px;margin-top: 95px;" onClick="sendWeightToTrac('+avgWeight.toFixed(1)+');">Save Weight</button><br><br>';
+            $$("#temp_div").append("<div class='weight-test'>" + avgWeight.toFixed(1) + "</div>");
+            $$("#temp_div").append(stopBtn);
+        }
+    }, 100);
+}
+function stopWeightTest() {
+    $$("#temp_div").empty();
+    ui.displayMsgRight("", false);
+    clearInterval(globals.weightTest);
+    ui.BtnsEnableControll(['scan','sway','landing','weight']);
+    $$("#temp_div").hide();
+    $$("#cop1_div").show();
+    $$(".msg-area2").show();
+}
+function sendWeightToTrac(weight) {
+ var d = new Date();
+ var year = d.getFullYear();
+ var month = ("0" + (d.getMonth() + 1)).slice(-2);
+ var day = ("0" + d.getDate()).slice(-2);
+ var mins = ("0" + d.getMinutes()).substr(-2);
+ var hours = ("0" + d.getHours()).substr(-2);
+ d= year+"-"+month+"-"+day+" "+hours+":"+mins+":00";
+  var data = {"Date": d,"uid": globals.testGUID,"value": weight};
+  data = JSON.stringify(data);              
+    $$.ajax({
+        type: 'POST',
+        url: "/api/post/save_weight",
+        data: {"data": data},
+        success: function (result) {
+            ui.displayMsgRight('Weight saved', false);
+        },error: function (result) {
+            var result = jQuery.parseJSON(result);
+            console.log(result);
+            ui.setMsg('Failed to save weight', true);
+        }
+    });
+}
