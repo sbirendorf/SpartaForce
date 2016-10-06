@@ -1,4 +1,4 @@
-var version = '1.6';
+var version = '1.7';
 var $$ = window.jQuery;
 var globals,ui;
 console.log($$.fn.jquery);
@@ -14,12 +14,12 @@ function contStartApp() {
         url: "/api/post/start",
         data: {"data": json},
         success: function (result) {
+			ui = new UI(); // new object instance
             var result = jQuery.parseJSON(result);
             if (result.hasOwnProperty('error')) {
                 ui.setMsg(result.error.descr, true);
             } else {
                 globals = new Globals(result.config);
-                ui = new UI(); // new object instance
                 ui.setUserName(result.config.name);
                 // localStorage.clear();
                 connectToWebsocketServer();

@@ -20,6 +20,7 @@ app.use(methodOverride());
 //global 
 var sessionId;
 var site = '';
+var siteHttp = 'https';
 // listen (start app with node server.js) ======================================
 app.listen(9000);
 console.log("SpartaForce listening on port 9000");
@@ -28,8 +29,13 @@ app.post('/api/post/:tagId', function (req, res) {
         var data = JSON.parse(req.body.data);
         sessionId = data.sid;
         site = data.site;
+        //fix for the https on localhost
+        if(site = 'localhost'){
+            siteHttp='http';
+        }
+
         request.post({
-            url: 'https://' + data.site + '/api/bertec_setting/' + data.uid,
+            url: siteHttp+'://' + data.site + '/api/bertec_setting/' + data.uid,
             form: {
                 'uid': data.uid
             }
@@ -63,7 +69,7 @@ app.post('/api/post/:tagId', function (req, res) {
     setTimeout(function() {
 
         var fs = require("fs");
-        var r = request.post('https://' + site + '/api/savescan', function optionalCallback(err, httpResponse, body) {
+        var r = request.post(siteHttp+'://' + site + '/api/savescan', function optionalCallback(err, httpResponse, body) {
               if (err) {
                        console.log("There was an error:", err);
                        res.send('{"error":{"descr":"There was an error connecting to SpartaTrac"}}');
@@ -102,7 +108,7 @@ app.post('/api/post/:tagId', function (req, res) {
     if (req.param("tagId") == 'save_sway') {
         var data = JSON.parse(req.body.data);
         request.post({
-            url: 'https://' + site + '/api/savesway',
+            url: siteHttp+'://' + site + '/api/savesway',
             form: {
                 'sessionId': sessionId,
                 'date': data.Date,
@@ -137,7 +143,7 @@ app.post('/api/post/:tagId', function (req, res) {
     if (req.param("tagId") == 'save_landing') {
         var data = JSON.parse(req.body.data);
         request.post({
-            url: 'https://' + site + '/api/savestabilize',
+            url: siteHttp+'://' + site + '/api/savestabilize',
             form: {
                     'sessionId': sessionId,
                     'date': data.Date,
@@ -166,7 +172,7 @@ app.post('/api/post/:tagId', function (req, res) {
     if (req.param("tagId") == 'save_weight') {
         var data = JSON.parse(req.body.data);
         request.post({
-            url: 'https://' + site + '/api/set_fact',
+            url: siteHttp+'://' + site + '/api/set_fact',
             form: { 
                     'sessionId': sessionId,
                     'date': data.Date,
@@ -186,7 +192,7 @@ app.post('/api/post/:tagId', function (req, res) {
     }
     if (req.param("tagId") == 'publish_tests') { 
         request.post({
-            url: 'https://' + site + '/api/publish_tests',
+            url: siteHttp+'://' + site + '/api/publish_tests',
             form: {
                 'sessionId': sessionId,
                 'uid': req.body.uid,
