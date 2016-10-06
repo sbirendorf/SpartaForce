@@ -32,10 +32,11 @@ app.post('/api/post/:tagId', function (req, res) {
         //fix for the https on localhost
         if(site = 'localhost'){
             siteHttp='http';
+            site = '127.0.0.1';
         }
 
         request.post({
-            url: siteHttp+'://' + data.site + '/api/bertec_setting/' + data.uid,
+            url: siteHttp+'://' + site + '/api/bertec_setting/' + data.uid,
             form: {
                 'uid': data.uid
             }
