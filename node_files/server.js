@@ -30,7 +30,7 @@ app.post('/api/post/:tagId', function (req, res) {
         sessionId = data.sid;
         site = data.site;
         //fix for the https on localhost
-        if(site = 'localhost'){
+        if(site == 'localhost'){
             siteHttp='http';
             site = '127.0.0.1';
         }

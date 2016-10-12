@@ -1,9 +1,9 @@
-var version = '1.7';
+var version = '1.8';
 var $$ = window.jQuery;
 var globals,ui;
 console.log($$.fn.jquery);
 function contStartApp() {
-	document.title = "SpartaForce v-" +version;
+	document.title = "SpartaForce v " +version;
     var fType = window.location.href.split("/");
     var site = fType[3].substring(fType[3].indexOf("#") + 1);
     var u = fType[3].substring(0, fType[3].indexOf('#'));
