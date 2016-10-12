@@ -29,8 +29,9 @@ app.post('/api/post/:tagId', function (req, res) {
         var data = JSON.parse(req.body.data);
         sessionId = data.sid;
         site = data.site;
+        console.log(site);
         //fix for the https on localhost
-        if(site == 'localhost'){
+        if(site == 'spartatrac.com'){
             siteHttp='http';
             site = '127.0.0.1';
         }
