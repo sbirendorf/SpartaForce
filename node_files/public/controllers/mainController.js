@@ -204,3 +204,20 @@ function publishResultsInSpartaTrac(testType){
         }
     });
 }
+
+function getCurrentDateTime(){
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	if(dd<10) {
+		dd='0'+dd
+	} 
+
+	if(mm<10) {
+		mm='0'+mm
+	} 
+	return yyyy+'-'+mm+'-'+dd+' '+time;
+	
+}

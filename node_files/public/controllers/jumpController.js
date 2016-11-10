@@ -60,8 +60,9 @@ function countermovementResult(data) {
 }
 
 function saveJumpToLocalStorage(data, imageUrl){ 
-    d = new Date();
-    data.Date = d.yyyymmdd();
+    //d = new Date();
+   // data.Date = d.yyyymmdd();
+    data.Date =getCurrentDateTime();
     data.imageUrl = imageUrl;
     var data = JSON.stringify(data);
     //data= '{"Command": "RESULTS","ID": "testguid","JumpType": "Countermovement","Result": "OK","Reason": "foobar","Timestamp": "ms","ResultsTimestamp": "ms","WeightKG": "230.44","Countermovement": {"JumpHeightM": "123.4","EccRateOfFzNs": "3","NormalConcImpNSKg": "4.3","NormAvgConcForceN": "0.2"},"Sway": {"MLVelocityMs": "4","APVelocityMs": "0.3","TotalVelocityMs": "6.4"},"SingleLegLanding": {"NormalizedMaxVerticalForce": "5","TimeToStabilization": "5.2","MLTTS": "0.5","APTTS": "1.1","RVTTS": "0"},"Fz": ["44.2","44.3","44.21","45.7"],"Mx": ["1.2","3.1",".21","5.4"],"My": ["0.2","0.1","3.1","'+numberOfJumps+'"]}';
