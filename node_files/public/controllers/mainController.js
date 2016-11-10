@@ -1,4 +1,4 @@
-var version = '1.8';
+var version = '1.9';
 var $$ = window.jQuery;
 var globals,ui;
 console.log($$.fn.jquery);
