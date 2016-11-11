@@ -31,7 +31,7 @@ app.post('/api/post/:tagId', function (req, res) {
         site = data.site;
         console.log(site);
         //fix for the https on localhost
-        if(site == 'spartatrac.com'){
+        if(site == 'spartatrac.com' || site == 'localhost'){
             siteHttp='http';
             site = '127.0.0.1';
         }

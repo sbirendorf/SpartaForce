@@ -10,8 +10,8 @@ function contStartJumpTest() {
 }
 //simple validation before we save the data
 function validateJumpResult(data) {
-    if (data.Countermovement.JumpHeight < globals.ValidationMinJumpHeight || data.JumpHeight > globals.ValidationMaxJumpHeight) {
-        ui.setMsg('Invalid jump height. Jump as to be greater than '+data.JumpHeight, true);
+    if (data.Countermovement.JumpHeight < globals.ValidationMinJumpHeight || data.Countermovement.JumpHeight > globals.ValidationMaxJumpHeight) {
+        ui.setMsg('Invalid jump height. Jump as to be greater than '+data.Countermovement.JumpHeight, true);
         return true;
     } 
     if (data.Countermovement.AverageConcentricPhaseForce < globals.ValidationMinAverageConcentricPhaseForce) {

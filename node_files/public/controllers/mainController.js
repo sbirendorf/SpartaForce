@@ -120,15 +120,19 @@ function getDataLocalStorage(max, type) {
 }
 //data in json format 
 function send_date(data, domain, testType, sentPercent,testNumber) {
-   // console.log(data);
     ui.progressBar();
     $$.ajax({
         type: 'POST',
         url: "/api/post/" + domain,
         data: {"data": data},
         success: function (result) {
-            console.log(result);
-            serverResultCallback(jQuery.parseJSON(result),sentPercent,testNumber,testType);
+           var json = jQuery.parseJSON(result);
+            if(json.status == 'error'){
+                 ui.setMsg(json.error.descr, true);
+                 $$(".progress-area").empty();
+            }else{
+                serverResultCallback(json,sentPercent,testNumber,testType);
+           }
         },
         error: function (result) {
             var result = jQuery.parseJSON(result);
@@ -139,6 +143,7 @@ function send_date(data, domain, testType, sentPercent,testNumber) {
 }
 //Parameters testType = scan, sway, landing
 function sendDataToTrac (testType) {
+    $$(".log-msg").empty();
     var max = get_max(testType);
     var totalTests = 0;
     globals.serverMessage='';
@@ -170,7 +175,7 @@ function serverResultCallback(result,sentPercent,testNumber,testType) {
     }
     if (sentPercent == 1) {//we sent all the trails
             $$(".progress-area").empty();
-            if(globals.publish == 'yes'){
+            if(globals.publish == 'yes' ){
                 publishResultsInSpartaTrac(testType);
             }
             ui.BtnsEnableControll(['scan','sway','landing','weight']);
@@ -178,7 +183,6 @@ function serverResultCallback(result,sentPercent,testNumber,testType) {
 }
 function publishResultsInSpartaTrac(testType){
     ui.displayMsgRight('Publishing ' + testType, false);
-    console.log(testType);
     var domain='';
     switch (testType) {
     case 'scan':
@@ -195,7 +199,7 @@ function publishResultsInSpartaTrac(testType){
         type: 'POST',
         url: "/api/post/publish_tests",
         data: {"test": domain,"uid": globals.testGUID},
-        success: function (result) {
+        success: function (result) { 
             ui.displayMsgRight('Publish finished', false);
         },error: function (result) {
             var result = jQuery.parseJSON(result);

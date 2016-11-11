@@ -147,6 +147,7 @@ function websocketParseIncomingData(jsonText)
       //COPfield.positionTargetCursor(obj.FZ, obj.COPx, obj.COPy);
       if(drawData == true && obj.JumpType=='Countermovement'){
             globals.t=globals.t+3 ;
+          //  console.log(globals.t);
             globals.v=Math.abs(obj.WeightKG * 9.81);
         }
       if(drawData == true && obj.JumpType=='Sway'){
@@ -218,7 +219,7 @@ function websocketSendJsonData(jsonObject)
 
 function sendInit()
 {
-   websocketSendJsonData({ Command: "STARTSTATUS", ID: globals.testGUID, "ResponseRate": 25 }); // there is no point in having a faster than 20ms update rate; this gives a very nice and smooth result
+   websocketSendJsonData({ Command: "STARTSTATUS", ID: globals.testGUID, "ResponseRate": globals.RtnRate }); // there is no point in having a faster than 20ms update rate; this gives a very nice and smooth result
 }
 
 function sendStop()
