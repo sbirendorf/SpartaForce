@@ -35,6 +35,7 @@ function weightCalc(getWeight,userWeight){
     }  
 }
 function startLandingOperator(userWeight) {
+    globals.landingInitWeight = userWeight;
     var str = setInterval(function () {
         if (globals.currentWeight < 2) {
             var audio = new Audio('../horn.mp3');
@@ -67,7 +68,6 @@ function validateLandingResult(data) {
 }
 //landing results 
 function singleLegLandingResult(data) {
-    console.log(data);
     var invalid = validateLandingResult(data);
     if (invalid) {
         var audio = new Audio('../error.mp3');
@@ -79,8 +79,6 @@ function singleLegLandingResult(data) {
         var testInitWeight = data.Input.WeightKG;
         //if pounds convert the weight, notich the object name still WeightKG
         data.WeightKG = ui.convertWeight(data.Input.WeightKG);
-        
-        console.log(data);
         var data = JSON.stringify(data);
         localStorage.setItem("Sparta_landing_" + globals.landingTestNumber+ '_' + globals.testGUID, data);
         console.log(localStorage['Sparta_landing_' + globals.landingTestNumber+ '_' + globals.testGUID]);
@@ -106,10 +104,26 @@ function singleLegLandingResult(data) {
 }
 
 function landingProgress(obj) {
-    //the user is on the plate , wait 5 sec and send a message 
     //we want to be here once, so we set the flag to true
     if (obj.Status == 'protocolinprogress' && globals.flag == true) {
         globals.flag = false;
+        if(obj.WeightKG >1){
+            var a  = Math.pow(obj.FY, 2) + Math.pow(obj.FX, 2) + Math.pow(obj.FZ, 2) ; 
+            a = Math.sqrt(a)/ 9.81;
+            var f = obj.WeightKG * a;
+            var precentBW = f/globals.landingInitWeight;
+            console.log(precentBW);
+            //if the landing did not reach the min force
+            if(precentBW < globals.landingMinForce){
+                stopDuringTesting('END');
+                //overwrite the error from the websocket, wait to show after
+                setTimeout(function () {
+                     ui.setMsg("Test failed, no trial if peak force is less that "+globals.landingMinForce+"% of BW in N", true);
+                }, 250);
+            }
+            
+        }
+         //the user is on the plate , wait 3 sec and send a message 
         setTimeout(function () {
             ui.displayMsgRight("Step off the plate.", false);
             var audio = new Audio('../stop.mp3');

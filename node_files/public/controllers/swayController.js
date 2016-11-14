@@ -52,7 +52,6 @@ function swayResult(data) {
         globals.swayTestNumber--;
     }
     //test again 
-    console.log(globals.swayTestNumber);
     if (globals.swayTestNumber > 0) {
         setTimeout(function () {
             contStartSwayTest(globals.swayExtremity);
@@ -72,7 +71,7 @@ function swayProgress(obj) {
         $$(".log-msg").empty();
         var side = ui.getSide(globals.swayTestNumber);
         globals.flag=true;
-        ui.displayMsgRight("Stand Still – Balance on" + side + " Foot / Hand First.  Time Remaining " + obj.TimeRemainSec.toFixed(0), false);
+        ui.displayMsgRight("Stand Still – Balance on " + side + " Foot / Hand First.  Time Remaining " + obj.TimeRemainSec.toFixed(0), false);
     }
     //bertec execute protocolstart twice and the sounds play twice
     //we added a flag to fix this bug
@@ -89,7 +88,7 @@ function swayProgress(obj) {
         var side = ui.getSide(globals.swayTestNumber);
         var t = 20 - obj.SamplesCollected / 1000;
         ui.displayMsgRight("Balance on " + side + ",  Time Remaining " + t.toFixed(0) + "", false);
-
+        swayValidateDuringTest(obj);
     }
     if (obj.Status == 'computingstart') {
         var audio = new Audio('../stop.mp3');
@@ -99,5 +98,27 @@ function swayProgress(obj) {
         $$(".log-msg").empty();
         var side = ui.getSide(globals.swayTestNumber);
         ui.displayMsgRight("Done, Computing ." + side + "", false);
+    }
+    if (obj.Status == 'notrunning') {
+        $$(".log-msg").empty();
+        ui.displayMsgRight("", false);
+    }
+}
+//run test validation during the test
+function swayValidateDuringTest(data){
+    //check if off the plate
+    if(data.WeightKG <1){ 
+          globals.swayErrorCounter++;
+          //check for how long the user if off the plate
+          if(globals.swayErrorCounter > globals.swayTimeOffPlate){
+             stopDuringTesting('END');
+             //overwrite the error from the websocket, wait to show after
+               setTimeout(function () {
+                     ui.setMsg("Test failed, do not step off the place", true);
+                }, 250);
+             
+          }
+    }else{
+        globals.swayErrorCounter = 0;
     }
 }

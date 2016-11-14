@@ -194,7 +194,7 @@ app.post('/api/post/:tagId', function (req, res) {
     }
     if (req.param("tagId") == 'publish_tests') { 
         request.post({
-            url: siteHttp+'://' + site + '/api/publish_tests',
+            url: siteHttp+'://' + site + '/api/post/publish_tests',
             form: {
                 'sessionId': sessionId,
                 'uid': req.body.uid,
@@ -203,10 +203,10 @@ app.post('/api/post/:tagId', function (req, res) {
         }, function (error, response, body) {
             if (error) {
                 console.log("There was an error:", error);
-                res.send('{"error":{"descr":"SpartaTrac can not publish the test"}}');
+                res.send("SpartaTrac can not publish the test");
             } else {
                 console.log("published successfully! ", body);
-                res.send(body);
+                res.send("published successfully!");
             }
         });
     }

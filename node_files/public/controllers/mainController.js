@@ -1,4 +1,4 @@
-var version = '1.9';
+var version = '2';
 var $$ = window.jQuery;
 var globals,ui;
 console.log($$.fn.jquery);
@@ -44,6 +44,7 @@ function contStartApp() {
 function Globals(obj) {
     console.log(obj);
     this.testGUID = obj.uid; // the user id ,init the value on start
+    this.testId = '';
     this.jumpTestNubmer = obj.jumpTestNubmer;
     this.swayTestNumber = obj.swayTestNumber;
     this.landingTestNumber = obj.landingTestNumber;
@@ -62,6 +63,7 @@ function Globals(obj) {
     this.v = 0;//value  
     this.stopChart =false;
     this.serverMessage ='';
+    this.swayErrorCounter = 0;
     this.StandStill = obj.StandStill;
     this.KeepData = obj.KeepData;
     this.WebsocketPort = obj.WebsocketPort;
@@ -73,10 +75,13 @@ function Globals(obj) {
     this.ValidationMinConcentricVerticalImpulse = obj.ValidationMinConcentricVerticalImpulse;
     this.ValidationMinJumpHeight = obj.ValidationMinJumpHeight;
     this.ValidationMaxJumpHeight = obj.ValidationMaxJumpHeight;
-    
     this.ValidationRequiredStabilityDuration = obj.ValidationRequiredStabilityDuration;
     this.ValidationMinForceThreshold = obj.ValidationMinForceThreshold;
     this.ValidationMaxMSOffPlate = obj.ValidationMaxMSOffPlate;
+    this.swayTimeOffPlate = obj.ValidationSwayTimeOffPlate;
+    this.landingInitWeight = 0;
+    this.landingMinForce = obj.ValidationLandingMinForce;
+    this.totalTests = 0; 
 }
 //function contStopJumpTest() {// stop the scan at the middle and remove the results
 //    stopDuringTesting('ABORT');
@@ -154,6 +159,7 @@ function sendDataToTrac (testType) {
             totalTests++;
         }
     }
+    globals.totalTests = totalTests;
     var count =1;
     for (var s = max; s > 0; s--) {
         if(json[s] != undefined){
@@ -187,12 +193,24 @@ function publishResultsInSpartaTrac(testType){
     switch (testType) {
     case 'scan':
         domain = "scan";
+        if(globals.totalTests <=2){
+            ui.displayMsgRight('Not enough trails to publish ' + testType, false);
+            return 0;
+        }
         break;
     case 'sway':
         domain = "sway";
+        if(globals.totalTests <=3){
+            ui.displayMsgRight('Not enough trails to publish ' + testType, false);
+            return 0;
+        }
         break;
     case 'landing':
         domain = "landing";
+        if(globals.totalTests <=5){
+            ui.displayMsgRight('Not enough trails to publish ' + testType, false);
+            return 0;
+        }
         break;
     }
     $$.ajax({
@@ -224,4 +242,8 @@ function getCurrentDateTime(){
 	} 
 	return yyyy+'-'+mm+'-'+dd+' '+time;
 	
+}
+function getTimeStamp(){
+    var d = new Date();
+    return d.getTime();
 }

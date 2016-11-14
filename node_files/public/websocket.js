@@ -219,6 +219,8 @@ function websocketSendJsonData(jsonObject)
 
 function sendInit()
 {
+   // var time = getCurrentDateTime();
+   // globals.testId = globals.testGUID+'_'+time;
    websocketSendJsonData({ Command: "STARTSTATUS", ID: globals.testGUID, "ResponseRate": globals.RtnRate }); // there is no point in having a faster than 20ms update rate; this gives a very nice and smooth result
 }
 
@@ -232,7 +234,7 @@ function sendGetConfig()
    websocketSendJsonData({ Command: "GETCONFIG", ID: globals.testGUID }); // send a CONFIG result block
 }
 function sendSetConfig(ZeroNow,AutoZero,StillnessLevel,StillnessSec,ResultsAge)
-{
+{	
    websocketSendJsonData({ Command: "CONFIG",
                            ID: globals.testGUID,
                            ZeroNow: ZeroNow,
@@ -246,24 +248,30 @@ function sendSetConfig(ZeroNow,AutoZero,StillnessLevel,StillnessSec,ResultsAge)
 
 function startJump()// start scan
 {
+   var time = getTimeStamp();
+   globals.testId = globals.testGUID+'_'+time;
    websocketSendJsonData({ Command: "BEGIN",
-                          ID: globals.testGUID,
+                          ID: globals.testId,
                           JumpType: 'Countermovement',
                           MaxMSOffPlate:globals.JumpTimeOfPlate
                         }); 
 }
 function startSway()// start sway
 {
+   var time = getTimeStamp();
+   globals.testId = globals.testGUID+'_'+time;
    websocketSendJsonData({ Command: "BEGIN",
-                            ID: globals.testGUID,
+                            ID: globals.testId,
                             JumpType: 'Sway',
                             MaxSamples:20000 
                         }); 
 }
 function startLanding(weight)// start landing
 {
+   var time = getTimeStamp();
+   globals.testId = globals.testGUID+'_'+time;
    websocketSendJsonData({ Command: "BEGIN",
-                           ID: globals.testGUID,
+                           ID: globals.testId,
                            JumpType: 'SingleLegLanding', 
                            WeightKG:weight,
                            ValidationRequiredStabilityDuration:globals.ValidationRequiredStabilityDuration,
@@ -273,10 +281,10 @@ function startLanding(weight)// start landing
 }
 function getJumpData(full)// get results
 {
-   websocketSendJsonData({ Command: "GETRESULTS", ID: globals.testGUID,IncludeForceData: full }); 
+   websocketSendJsonData({ Command: "GETRESULTS", ID: globals.testId,IncludeForceData: full }); 
 }
 function stopDuringTesting(command)// stop the test , command: end or abort 
 {
-   websocketSendJsonData({ Command: command, ID: globals.testGUID });
+   websocketSendJsonData({ Command: command, ID: globals.testId });
 }
 

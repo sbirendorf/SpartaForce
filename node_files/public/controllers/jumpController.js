@@ -11,7 +11,7 @@ function contStartJumpTest() {
 //simple validation before we save the data
 function validateJumpResult(data) {
     if (data.Countermovement.JumpHeight < globals.ValidationMinJumpHeight || data.Countermovement.JumpHeight > globals.ValidationMaxJumpHeight) {
-        ui.setMsg('Invalid jump height. Jump as to be greater than '+data.Countermovement.JumpHeight, true);
+        ui.setMsg('Invalid jump height. Jump as to be greater than '+ data.Countermovement.JumpHeight.toFixed(), true);
         return true;
     } 
     if (data.Countermovement.AverageConcentricPhaseForce < globals.ValidationMinAverageConcentricPhaseForce) {
@@ -31,7 +31,7 @@ function validateJumpResult(data) {
     if (lastJump != null || lastJump != undefined) {//if not the first jump
          lastJump = jQuery.parseJSON(lastJump);
          if(Math.abs(lastJump.WeightKG - data.WeightKG) > globals.WeightDiff){
-             ui.setMsg('Invalid weight, initial weight was '+lastJump.WeightKG +', current weight ' +data.WeightKG , true);
+             ui.setMsg('Invalid weight, initial weight was '+lastJump.WeightKG.toFixed() +', current weight ' +data.WeightKG.toFixed() , true);
              return true;
          }
     }
@@ -112,6 +112,10 @@ function jumpProgress(obj) {
     if (obj.Status == 'computingstart') {
         $$(".log-msg").empty();
         ui.displayMsgRight("Done, Computing", false);
+    }
+    if (obj.Status == 'notrunning') {
+        $$(".log-msg").empty();
+        ui.displayMsgRight("", false);
     }
 }
 function getJumpImage(data,number){
