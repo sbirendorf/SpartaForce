@@ -82,6 +82,7 @@ function Globals(obj) {
     this.landingInitWeight = 0;
     this.landingMinForce = obj.ValidationLandingMinForce;
     this.totalTests = 0; 
+    this.MinJumpsToScan = Number(obj.MinJumpsToScan);
 }
 //function contStopJumpTest() {// stop the scan at the middle and remove the results
 //    stopDuringTesting('ABORT');
@@ -89,6 +90,8 @@ function Globals(obj) {
 
 function contABORTJumpTest() {//   stop the scan at the middle of the test 
     stopDuringTesting('END');
+   // stopDuringTesting('ABORT');
+    ui.displayMsgRight("", false);
     globals.stopChart = true;
     ui.BtnsEnableControll(['scan','sway','landing','weight']);
 }
@@ -107,9 +110,11 @@ function afterResult(data) {
 }
 function clearlocalStorage() {
     console.log(localStorage);
-    localStorage.clear();
-    $$(".data-table").empty();
-    console.log(localStorage);
+    var r = confirm("Are you sure you want to clear all tests data for this athlete?");
+    if (r == true) {
+         localStorage.clear();
+        $$(".data-table").empty();
+    } 
 }
 function getDataLocalStorage(max, type) {
     var json = [];
@@ -159,6 +164,9 @@ function sendDataToTrac (testType) {
             totalTests++;
         }
     }
+    if(totalTests == 0){
+          alert('No data found');
+    }
     globals.totalTests = totalTests;
     var count =1;
     for (var s = max; s > 0; s--) {
@@ -193,7 +201,8 @@ function publishResultsInSpartaTrac(testType){
     switch (testType) {
     case 'scan':
         domain = "scan";
-        if(globals.totalTests <=2){
+        var min = Number(globals.MinJumpsToScan)-1;
+        if(globals.totalTests <=min){
             ui.displayMsgRight('Not enough trails to publish ' + testType, false);
             return 0;
         }

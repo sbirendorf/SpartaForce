@@ -202,6 +202,13 @@ function websocketParseIncomingData(jsonText)
               }, 3500);
 
             }
+            console.log(obj);
+            // if(obj.JumpType == "SingleLegLanding"){
+            //   setTimeout(function () {
+            //             startLandingOperator(globals.landingInitWeight);
+            //   }, 500);
+
+            // }
 
         }
         drawData=false;

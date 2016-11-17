@@ -35,6 +35,7 @@ function weightCalc(getWeight,userWeight){
     }  
 }
 function startLandingOperator(userWeight) {
+    $$(".log-msg").empty();
     globals.landingInitWeight = userWeight;
     var str = setInterval(function () {
         if (globals.currentWeight < 2) {
@@ -66,6 +67,7 @@ function stratLandingTest() {
 function validateLandingResult(data) {
     return false;
 }
+
 //landing results 
 function singleLegLandingResult(data) {
     var invalid = validateLandingResult(data);
@@ -73,9 +75,8 @@ function singleLegLandingResult(data) {
         var audio = new Audio('../error.mp3');
         audio.play();
     } else {
-        d = new Date();
         data.side = ui.getSide(globals.landingTestNumber);
-        data.Date = d.yyyymmdd();
+        data.Date =getCurrentDateTime();
         var testInitWeight = data.Input.WeightKG;
         //if pounds convert the weight, notich the object name still WeightKG
         data.WeightKG = ui.convertWeight(data.Input.WeightKG);
@@ -84,6 +85,7 @@ function singleLegLandingResult(data) {
         console.log(localStorage['Sparta_landing_' + globals.landingTestNumber+ '_' + globals.testGUID]);
         var q = jQuery.parseJSON(localStorage['Sparta_landing_' + globals.landingTestNumber+ '_' + globals.testGUID]);
         globals.landingTestNumber--;
+                ui.displayMsg('Trials Remaining :' + globals.landingTestNumber);
     }
     //test again 
     if (globals.landingTestNumber > 0) {
@@ -94,6 +96,7 @@ function singleLegLandingResult(data) {
         }, 2500);
     } else {//test is over 
         ui.displayMsgRight("", false);
+
         var r = confirm("Test Over! Send data to sparta Trac?");
         if (r == true) {
             sendDataToTrac('landing');
@@ -115,7 +118,7 @@ function landingProgress(obj) {
             console.log(precentBW);
             //if the landing did not reach the min force
             if(precentBW < globals.landingMinForce){
-                stopDuringTesting('END');
+                stopDuringTesting('ABORT');
                 //overwrite the error from the websocket, wait to show after
                 setTimeout(function () {
                      ui.setMsg("Test failed, no trial if peak force is less that "+globals.landingMinForce+"% of BW in N", true);
