@@ -1,4 +1,4 @@
-var version = '2';
+var version = '2.2';
 var $$ = window.jQuery;
 var globals,ui;
 console.log($$.fn.jquery);
@@ -58,6 +58,7 @@ function Globals(obj) {
     this.swayExtremity = 'lower';
     this.currentWeight; // the weight update every 100 ms by the plate
     this.flag;
+    this.swayWeightValidation = false;
     this.t = -1;//time 
     this.n = 12000; // remove the line after how many ms
     this.v = 0;//value  
@@ -83,6 +84,7 @@ function Globals(obj) {
     this.landingMinForce = obj.ValidationLandingMinForce;
     this.totalTests = 0; 
     this.MinJumpsToScan = Number(obj.MinJumpsToScan);
+    this.upperSwayWeightDiff = obj.upperSwayWeightDiff;
 }
 //function contStopJumpTest() {// stop the scan at the middle and remove the results
 //    stopDuringTesting('ABORT');
@@ -182,7 +184,7 @@ function serverResultCallback(result,sentPercent,testNumber,testType) {
     if(result.sid >1){
         localStorage.removeItem('Sparta_' + testType + '_' + testNumber+ '_' + globals.testGUID);// remove the data to a void duplicate
     }else{
-         globals.serverMessage+='Failed to save trail '+testNumber+' data <br>' ;
+         globals.serverMessage+='Failed to save trial '+testNumber+' data <br>' ;
     }
     if(globals.serverMessage.length >0){
         ui.setMsg(globals.serverMessage, true);
@@ -195,34 +197,36 @@ function serverResultCallback(result,sentPercent,testNumber,testType) {
             ui.BtnsEnableControll(['scan','sway','landing','weight']);
     }
 }
-function publishResultsInSpartaTrac(testType){
-    ui.displayMsgRight('Publishing ' + testType, false);
-    var domain='';
+function publishResultsInSpartaTrac(testType){ 
     switch (testType) {
     case 'scan':
-        domain = "scan";
+        callPublish('scan');
         var min = Number(globals.MinJumpsToScan)-1;
         if(globals.totalTests <=min){
-            ui.displayMsgRight('Not enough trails to publish ' + testType, false);
+            ui.displayMsgRight('Not enough trials to publish ', false);
             return 0;
         }
         break;
     case 'sway':
-        domain = "sway";
+        callPublish('sway');
         if(globals.totalTests <=3){
-            ui.displayMsgRight('Not enough trails to publish ' + testType, false);
+            ui.displayMsgRight('Not enough trial to publish ', false);
             return 0;
         }
         break;
     case 'landing':
-        domain = "landing";
+        callPublish('landing');
         if(globals.totalTests <=5){
-            ui.displayMsgRight('Not enough trails to publish ' + testType, false);
+            ui.displayMsgRight('Not enough trial to publish ', false);
             return 0;
         }
         break;
     }
-    $$.ajax({
+}
+
+function callPublish(domain){
+    ui.displayMsgRight('Publishing ' + domain, false);
+     $$.ajax({
         type: 'POST',
         url: "/api/post/publish_tests",
         data: {"test": domain,"uid": globals.testGUID},
@@ -235,7 +239,6 @@ function publishResultsInSpartaTrac(testType){
         }
     });
 }
-
 function getCurrentDateTime(){
 	var today = new Date();
 	var dd = today.getDate();
@@ -249,7 +252,7 @@ function getCurrentDateTime(){
 	if(mm<10) {
 		mm='0'+mm
 	} 
-	return yyyy+'-'+mm+'-'+dd+' '+time;
+	return yyyy+'-'+mm+'-'+dd+''+time;
 	
 }
 function getTimeStamp(){

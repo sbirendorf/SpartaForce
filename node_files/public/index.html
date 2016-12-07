@@ -32,6 +32,7 @@
 <div class=" main">    
   <div class="row">
       <div class="side-col text-center">
+      
         <button class="scan-btn btn btn-primary" style="width: 120px;" onClick="contStartJumpTest();">Scan Test</button><br><br>
         <button class="sway-btn btn btn-primary" style="width: 120px;" onClick="swaySideButtons();">Sway Test</button><br><br>
         <div class="sway-buttons"></div>
@@ -71,14 +72,16 @@
         </div>
         <div class="ops-test-send">   
             <div id="setting-btns">
+                <button class="btn btn-secondary" onClick="callPublish('scan');">Publish</button>
                 <button class="btn btn-secondary" onClick="sendDataToTrac('scan');"><i class="glyphicon glyphicon-upload"></i> Send Scan To Trac</button>
                 <button class="btn btn-secondary" onClick="view_data('scan');"><i class="glyphicon glyphicon-search"></i>View Saved Jumps Data</button><br><br>
+                <button class="btn btn-secondary" onClick="callPublish('sway');">Publish</button>
                 <button class="btn btn-secondary" onClick="sendDataToTrac('sway');"><i class="glyphicon glyphicon-upload"></i> Send Sway To Trac</button>
                 <button class="btn btn-secondary" onClick="view_data('sway');"><i class="glyphicon glyphicon-search"></i>View Saved Sways Data</button><br><br>
+                <button class="btn btn-secondary" onClick="callPublish('landing');">Publish</button>
                 <button class="btn btn-secondary" onClick="sendDataToTrac('landing');"><i class="glyphicon glyphicon-upload"></i> Send Landing To Trac</button>
                 <button class="btn btn-secondary" onClick="view_data('landing');"><i class="glyphicon glyphicon-search"></i>View Saved Landing Data</button>
                 <br><br>
-				
                 <button class="btn btn-danger" onClick="clearlocalStorage()">Clear All Tests Data</button>
                 <a class="btn btn-primary" href="https://github.com/sbirendorf/SpartaForce/raw/master/update.exe">Update the Software</a>
             </div><br>
