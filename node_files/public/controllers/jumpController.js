@@ -10,31 +10,7 @@ function contStartJumpTest() {
 }
 //simple validation before we save the data
 function validateJumpResult(data) {
-    if (data.Countermovement.JumpHeight < globals.ValidationMinJumpHeight || data.Countermovement.JumpHeight > globals.ValidationMaxJumpHeight) {
-        ui.setMsg('Invalid jump height. Jump as to be greater than '+ data.Countermovement.JumpHeight, true);
-        return true;
-    } 
-    if (data.Countermovement.AverageConcentricPhaseForce < globals.ValidationMinAverageConcentricPhaseForce) {
-         ui.setMsg('Invalid jump (Average Concentric Phase Force)', true);
-        return true;
-    }
-    if (data.Countermovement.AverageEccentricRateOfChange < globals.ValidationMinAverageEccentricRateOfChange) {
-        ui.setMsg('Invalid jump (Average Eccentric Rate Of Change)', true);
-        return true;
-    }
-    if (data.Countermovement.ConcentricVerticalImpulse < globals.ValidationMinConcentricVerticalImpulse) {
-        ui.setMsg('Invalid jump (Concentric Vertical Impulse)', true);
-        return true;
-    } 
-    var num= Number(globals.jumpTestNubmer)+1;
-    var lastJump = localStorage['Sparta_scan_' + num+ '_' + globals.testGUID];
-    if (lastJump != null || lastJump != undefined) {//if not the first jump
-         lastJump = jQuery.parseJSON(lastJump);
-         if(Math.abs(lastJump.WeightKG - data.WeightKG) > globals.WeightDiff){
-             ui.setMsg('Invalid weight, initial weight was '+lastJump.WeightKG.toFixed() +', current weight ' +data.WeightKG.toFixed() , true);
-             return true;
-         }
-    }
+    
     return false;
 }
 //scan results 
@@ -50,7 +26,7 @@ function countermovementResult(data) {
 
         setTimeout(function () {
              contStartJumpTest();
-        }, 3500);
+        }, 9500);
         
     } else {
         ui.displayMsgRight('<div class="jump-height"><div class="jump-title">Jump Height </div><div class="jump-number">' + Number(100 * data.Countermovement.JumpHeight).toFixed()+'</div></div>', false);   
@@ -61,8 +37,7 @@ function countermovementResult(data) {
 
 function saveJumpToLocalStorage(data, imageUrl){ 
     //d = new Date();
-   // data.Date = d.yyyymmdd();
-    data.Date =getCurrentDateTime();
+    data.Date = d.yyyymmdd();
     data.imageUrl = imageUrl;
     var data = JSON.stringify(data);
     //data= '{"Command": "RESULTS","ID": "testguid","JumpType": "Countermovement","Result": "OK","Reason": "foobar","Timestamp": "ms","ResultsTimestamp": "ms","WeightKG": "230.44","Countermovement": {"JumpHeightM": "123.4","EccRateOfFzNs": "3","NormalConcImpNSKg": "4.3","NormAvgConcForceN": "0.2"},"Sway": {"MLVelocityMs": "4","APVelocityMs": "0.3","TotalVelocityMs": "6.4"},"SingleLegLanding": {"NormalizedMaxVerticalForce": "5","TimeToStabilization": "5.2","MLTTS": "0.5","APTTS": "1.1","RVTTS": "0"},"Fz": ["44.2","44.3","44.21","45.7"],"Mx": ["1.2","3.1",".21","5.4"],"My": ["0.2","0.1","3.1","'+numberOfJumps+'"]}';
@@ -82,7 +57,7 @@ function continueScan(){
             drawData = true;
             contStartJumpTest();
             ui.displayMsg('Jumps Remaining :' + globals.jumpTestNubmer);
-        }, 3500);
+        }, 9500);
     } else {//test is over 
         ui.displayMsg('Jumps Remaining :' + globals.jumpTestNubmer);
         var r = confirm("Test Over! Send data to sparta Trac?");
@@ -128,34 +103,6 @@ function getJumpImage(data,number){
 		// create a file blob of our SVG.
 		var blob = new Blob([ doctype + source], { type: 'image/svg+xml;charset=utf-8' });
 
-		var url = window.URL.createObjectURL(blob);
-
-		// Put the svg into an image tag so that the Canvas element can read it in.
-		var img = d3.select('body').append('img')
-		 .attr('width', 100)
-		 .attr('height', 100)
-		 .node();
-        var canUrl ='';
-		img.onload = function(){
-		  // Now that the image has loaded, put the image into a canvas element.
-		  var canvas = d3.select('body').append('canvas').node();
-		  canvas.width = 600;
-		  canvas.height = 600;
-		  var ctx = canvas.getContext('2d');
-		  ctx.drawImage(img, 0, 0);
-		  var canvasUrl = canvas.toDataURL("image/png");
-		  var img2 = d3.select('body').append('img')
-			.attr('width', 150)
-			.attr('height', 150)
-			.node();
-		  // this is now the base64 encoded version of our PNG! you could optionally 
-		  // redirect the user to download the PNG by sending them to the url with 
-		  canUrl = img2.src = canvasUrl; 
-            saveJumpToLocalStorage(data, canUrl);
-            $$( "canvas" ).remove();
-            $$( "body img:not(.main-logo)").remove();
-            
+		
 		}
-		// start loading the image.
-		img.src = url;
 }

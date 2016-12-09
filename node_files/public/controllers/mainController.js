@@ -1,4 +1,4 @@
-var version = '2.2';
+var version = '2.0';
 var $$ = window.jQuery;
 var globals,ui;
 console.log($$.fn.jquery);

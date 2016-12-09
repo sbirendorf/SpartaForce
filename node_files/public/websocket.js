@@ -228,7 +228,7 @@ function sendInit()
 {
    // var time = getCurrentDateTime();
    // globals.testId = globals.testGUID+'_'+time;
-   websocketSendJsonData({ Command: "STARTSTATUS", ID: globals.testGUID, "ResponseRate": globals.RtnRate }); // there is no point in having a faster than 20ms update rate; this gives a very nice and smooth result
+   websocketSendJsonData({ Command: "STARTSTATUS", ID: globals.testGUID, "ResponseRate": 100 }); // there is no point in having a faster than 20ms update rate; this gives a very nice and smooth result
 }
 
 function sendStop()
@@ -270,7 +270,7 @@ function startSway()// start sway
    websocketSendJsonData({ Command: "BEGIN",
                             ID: globals.testId,
                             JumpType: 'Sway',
-                            MaxSamples:20000 
+                            MaxSamples:40000 
                         }); 
 }
 function startLanding(weight)// start landing

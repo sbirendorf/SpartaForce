@@ -23,7 +23,7 @@ DefaultDirName={pf}\{#MyAppName}
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
-OutputDir=C:\Users\spartadev\Desktop
+OutputDir=C:\Users\sbirendorf\Desktop\fp\
 OutputBaseFilename=setup
 Compression=lzma
 SolidCompression=yes
@@ -32,18 +32,16 @@ SolidCompression=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\install-service.bat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\CDM21216_Setup.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\BertecDevice.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\crashrpt_lang.ini"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\CrashSender.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\CrashSender.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\ftd2xx.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\SpartaBertecFPServer.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\bertec\SpartaBertecFPServer.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\node-v4.4.3-x64.msi"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\{#NSSM}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\spartadev\Desktop\SpartaForce - exe\node_files\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\install-service.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\bertec\BertecDevice.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\bertec\crashrpt_lang.ini"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\bertec\CrashSender.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\bertec\CrashSender.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\bertec\ftd2xx.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\bertec\SpartaBertecFPServer.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\node-v4.4.3-x64.msi"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\{#NSSM}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\sbirendorf\Desktop\fp\some-js-code\node_files\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 
