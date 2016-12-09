@@ -1,2 +1,0 @@
-
-nssm install SpartaForce 
